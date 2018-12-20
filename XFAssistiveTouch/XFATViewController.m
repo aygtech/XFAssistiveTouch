@@ -39,12 +39,8 @@
 }
 
 - (void)setItems:(NSArray<XFATItemView *> *)items {
-    if (items.count > [XFATLayoutAttributes maxCount]) {
-        _items = [items subarrayWithRange:NSMakeRange(0, [XFATLayoutAttributes maxCount])];
-    } else {
-        _items = items;
-    }
-    for (int i = 0; i < MIN(_items.count, _items.count); i++) {
+    _items = items;
+    for (int i = 0; i < _items.count; i++) {
         XFATItemView *item = _items[i];
         item.position = [XFATPosition positionWithCount:_items.count index:i];
     }

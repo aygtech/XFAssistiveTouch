@@ -53,7 +53,6 @@
     _assistiveWindow.windowLevel = CGFLOAT_MAX;
     _assistiveWindow.backgroundColor = [UIColor clearColor];
     _assistiveWindow.rootViewController = _navigationController;
-    _assistiveWindow.layer.masksToBounds = YES;
     [self makeVisibleWindow];
 }
 
@@ -110,6 +109,10 @@
 
 - (void)keyboardWillChangeFrame:(NSNotification *)notification {
     
+    if ([[UIDevice currentDevice].systemVersion integerValue] >= 10) {
+        return;
+    }
+    
     /*因为动画过程中不能实时修改_assistiveWindowRect,
      *所以如果执行点击操作的话,_assistiveTouchView位置会以动画之前的位置为准.
      *如果执行拖动操作则会有跳动效果.所以需要禁止用户操作.*/
@@ -146,9 +149,7 @@
         _assistiveWindowPoint = _assistiveWindow.center;
         _assistiveWindow.userInteractionEnabled = YES;
         //使其遮盖键盘
-        if ([[UIDevice currentDevice].systemVersion integerValue] < 10) {
-            [self makeVisibleWindow];
-        }
+        [self makeVisibleWindow];
     }];
 }
 

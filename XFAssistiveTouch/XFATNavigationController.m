@@ -8,7 +8,7 @@
 
 #import "XFATNavigationController.h"
 #import <objc/runtime.h>
-
+#import <SDWebImage/UIImageView+WebCache.h>
 @interface XFATNavigationController ()
 
 @property (nonatomic, strong) NSMutableArray<XFATPosition *> *pushPosition;
@@ -59,19 +59,30 @@
     _contentView.layer.cornerRadius = 14;
     [self.view addSubview:_contentView];
     
+    
     _effectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
     _effectView.frame = _contentView.bounds;
     _effectView.layer.cornerRadius = [XFATLayoutAttributes cornerRadius];
     _effectView.layer.masksToBounds = YES;
     [_contentView addSubview:_effectView];
     
-    _contentItem = [XFATItemView itemWithType:XFATItemViewTypeSystem];
+    
+    _contentItem = [[XFATItemView alloc]init];
+    _contentItem.bounds = CGRectMake(0, 0, 50, 50);
     _contentItem.center = _contentPoint;
+    // icon
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:_contentItem.bounds];
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    [_contentItem addSubview:imageView];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:@"https://raw.githubusercontent.com/aygtech/aygtech.github.io/master/docs/.vuepress/public/logo.png"]];
     [self.view addSubview:_contentItem];
     
     self.view.frame = CGRectMake(0, 0, [XFATLayoutAttributes itemImageWidth], [XFATLayoutAttributes itemImageWidth]);
     self.contentAlpha = [XFATLayoutAttributes inactiveAlpha];
     self.contentPoint = CGPointMake([XFATLayoutAttributes itemImageWidth] / 2, [XFATLayoutAttributes itemImageWidth] / 2);
+    
+    
+//    _contentView.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)viewDidLoad {
@@ -224,7 +235,6 @@
             [_viewControllers.lastObject.items makeObjectsPerformSelector:@selector(removeFromSuperview)];
             [_viewControllers.lastObject.backItem removeFromSuperview];
             [_viewControllers removeLastObject];
-            [_pushPosition removeLastObject];
             for (XFATItemView *item in _viewControllers.lastObject.items) {
                 [UIView animateWithDuration:[XFATLayoutAttributes animationDuration] animations:^{
                     item.alpha = 1;

@@ -86,8 +86,4 @@
     return transformPoint;
 }
 
-- (NSString *)description {
-    return [NSString stringWithFormat:@"%@ <count:%ld index:%ld>", [super description], (long)self.count, (long)self.index];
-}
-
 @end

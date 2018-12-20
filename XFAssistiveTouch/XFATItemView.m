@@ -51,14 +51,6 @@ typedef NS_ENUM(NSInteger, XFATInnerCircle) {
     return [[self alloc] initWithLayer:layer];
 }
 
-+ (instancetype)itemWithImage:(UIImage *)image {
-    CGSize size = CGSizeMake(MIN(image.size.width, [XFATLayoutAttributes itemWidth]), MIN(image.size.height, [XFATLayoutAttributes itemWidth]));
-    CALayer *layer = [CALayer layer];
-    layer.contents = (__bridge id)image.CGImage;
-    layer.bounds = CGRectMake(0, 0, MIN(size.width, [XFATLayoutAttributes itemImageWidth]), MIN(size.height, [XFATLayoutAttributes itemImageWidth]));
-    return [[self alloc] initWithLayer:layer];
-}
-
 - (instancetype)initWithFrame:(CGRect)frame {
     return [self initWithLayer:nil];
 }
